@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Employee Form</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+	<label for="emp-id">Employee ID:</label>
+	<input type="text" id="emp-id" name="emp-id">
+	<br>
+
+	<label for="dept-no">Department Number:</label>
+	<input type="text" id="dept-no" name="dept-no">
+	<br>
+
+	<label for="emp-name">Employee Name:</label>
+	<input type="text" id="emp-name" name="emp-name">
+	<br>
+
+	<label for="dept-name">Department Name:</label>
+	<input type="text" id="dept-name" name="dept-name">
+	<br>
+
+	<label for="sal">Salary:</label>
+	<input type="text" id="sal" name="sal">
+	<br>
+
+	<button type="button" id="first">first</button>
+	<button type="button" id="add">add</button>
+	<button type="button" id="all">all</button>
+	<button type="button" id="edit">edit</button>
+	<button type="button" id="delete">delete</button>
+
+	<div id="table"></div>
+
+	<script>
+		$(document).ready(function() {
+			$("#first").click(function() {
+
+				$.ajax({
+					type : "GET",
+					url : "employees",
+					success : function(response) {
+
+						$("#emp-id").val(response[0].empNo);
+						$("#dept-no").val(response[0].deptNo);
+						$("#emp-name").val(response[0].ename);
+						$("#dept-name").val(response[0].job);
+						$("#sal").val(response[0].sal);
+					},
+					error : function(error) {
+
+						$("#result").html("Error: " + error.statusText);
+					}
+				});
+			});
+
+			$("#add").click(function() {
+
+				$.ajax({
+					type : "POST",
+					url : "employees",
+					contentType : "application/json",
+					data : JSON.stringify({
+						"empNo" : $("#emp-id").val(),
+						"deptNo" : $("#dept-no").val(),
+						"ename" : $("#emp-name").val(),
+						"job" : $("#dept-name").val(),
+						"sal" : $("#sal").val()
+					}),
+					success : function(response) {
+						console.log("added");
+					},
+					error : function(error) {
+
+						console.log(error.statusText);
+					}
+
+				});
+			});
+			
+			
+			$("#all").click(function() {
+
+				$.ajax({
+					type : "GET",
+					url : "employees",
+					success : function(response) {
+
+
+						var div = $("#table");
+						div.empty();
+						
+									var table = document.createElement("table");
+									
+
+									var tr = document.createElement("tr");
+									var th1 = document.createElement("th");
+									var th2 = document.createElement("th");
+									var th3 = document.createElement("th");
+									var th4 = document.createElement("th");
+									var th5 = document.createElement("th");
+									th1.textContent = "id";
+									th2.textContent = "deptNumber";
+									th3.textContent = "name";
+									th4.textContent = "job";
+									th5.textContent = "salary";
+									tr.appendChild(th1);
+									tr.appendChild(th2);
+									tr.appendChild(th3);
+									tr.appendChild(th4);
+									tr.appendChild(th5);
+									table.appendChild(tr);
+									console.log(response);
+								response.forEach(function(x){
+									
+										var tr = document.createElement("tr");
+										var td1 = document.createElement("td");
+										var td2 = document.createElement("td");
+										var td3 = document.createElement("td");
+										var td4 = document.createElement("td");
+										var td5 = document.createElement("td");
+									
+										td1.textContent = x.empNo;
+										td2.textContent = x.deptNo;
+										td3.textContent = x.ename;
+										td4.textContent = x.job;
+										td5.textContent = x.sal;
+										tr.appendChild(td1);
+										tr.appendChild(td2);
+										tr.appendChild(td3);
+										tr.appendChild(td4);
+										tr.appendChild(td5);
+										table.appendChild(tr);
+									});
+								
+									div.append(table);
+					},
+					error : function(error) {
+
+						$("#result").html("Error: " + error.statusText);
+					}
+				});
+			});
+			
+			$("#edit").click(function() {
+				var a=$("#emp-id").val()
+				$.ajax({
+					type : "PUT",
+					url : `employees/${a}`,
+					contentType : "application/json",
+					data : JSON.stringify({
+						"empNo" : $("#emp-id").val(),
+						"deptNo" : $("#dept-no").val(),
+						"ename" : $("#emp-name").val(),
+						"job" : $("#dept-name").val(),
+						"sal" : $("#sal").val()
+					}),
+					success : function(response) {
+						console.log("added");
+					},
+					error : function(error) {
+
+						console.log(error.statusText);
+					}
+
+				});
+			});
+		
+			
+			$("#delete").click(function() {
+				var a=$("#emp-id").val()
+				$.ajax({
+					type : "DELETE",
+					url : `employees/${a}`,
+					
+					success : function(response) {
+						console.log("added");
+					},
+					error : function(error) {
+
+						console.log(error.statusText);
+					}
+
+				});
+			});
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		});
+			
+		
+		
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

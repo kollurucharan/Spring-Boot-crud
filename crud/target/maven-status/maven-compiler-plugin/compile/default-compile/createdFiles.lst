@@ -1,0 +1,5 @@
+com\rj\crud\Employee.class
+com\rj\crud\EmpRepository.class
+com\rj\crud\CrudApplication.class
+com\rj\crud\IEmpRepository.class
+com\rj\crud\EmpController.class
